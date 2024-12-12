@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Facts</title>
+    <title>Space Explorer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #0a1f44;
+            background-color: #041429;
             color: white;
-            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .container {
             text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .fact-card {
+        .fact-card, .planet-card {
             background-color: #1a3366;
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .planet-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .planet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .planet-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 10px auto;
+            object-fit: cover;
         }
 
         button {
@@ -35,6 +56,7 @@
             cursor: pointer;
             font-size: 16px;
             margin: 10px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -43,15 +65,41 @@
 
         h1 {
             color: #4CAF50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .tabs {
+            margin: 20px 0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Amazing Space Facts 🌎</h1>
-        <button onclick="getRandomFact()">Show Random Fact</button>
-        <div id="factDisplay" class="fact-card">
-            Click the button to see a space fact!
+        <h1>🚀 Space Explorer 🌎</h1>
+        <div class="tabs">
+            <button onclick="showContent('facts')">Space Facts</button>
+            <button onclick="showContent('planets')">Planets</button>
+        </div>
+
+        <div id="facts" class="tab-content">
+            <button onclick="getRandomFact()">Show Random Fact</button>
+            <div id="factDisplay" class="fact-card">
+                Click the button to see a space fact!
+            </div>
+        </div>
+
+        <div id="planets" class="tab-content">
+            <div class="planet-grid" id="planetGrid">
+                <!-- Planets will be inserted here by JavaScript -->
+            </div>
         </div>
     </div>
 
@@ -66,9 +114,32 @@
                     "id": 2,
                     "fact": "One day on Venus is longer than its year. Venus takes 243 Earth days to rotate on its axis"
                 }
-                // Add the remaining 18 facts here from the JSON
+                // Add all 20 facts here
             ]
         };
+
+        const planets = [
+            {
+                name: "Mercury",
+                image: "https://science.nasa.gov/wp-content/uploads/2023/03/mercury_messenger_big.webp",
+                info: "The smallest and innermost planet in the Solar System. Mercury has no moons and no substantial atmosphere."
+            },
+            {
+                name: "Venus",
+                image: "https://science.nasa.gov/wp-content/uploads/2023/03/venus_magellan.webp",
+                info: "Often called Earth's sister planet because of their similar size. Venus has a toxic atmosphere and is the hottest planet in our solar system."
+            },
+            {
+                name: "Earth",
+                image: "https://science.nasa.gov/wp-content/uploads/2023/03/earth_africa_americas.webp",
+                info: "Our home planet is the only known planet to harbor life. It's the third planet from the Sun and the only world known to have liquid water on its surface."
+            },
+            {
+                name: "Mars",
+                image: "https://science.nasa.gov/wp-content/uploads/2023/03/marsglobe.webp",
+                info: "Known as the Red Planet. Mars is home to the largest volcano in the Solar System, Olympus Mons."
+            }
+        ];
 
         function getRandomFact() {
             const facts = spaceFacts.space_facts;
@@ -77,6 +148,38 @@
             factDisplay.innerHTML = `<h3>Fact #${facts[randomIndex].id}</h3>
                                    <p>${facts[randomIndex].fact}</p>`;
         }
+
+        function showContent(contentId) {
+            const contents = document.getElementsByClassName('tab-content');
+            for (let content of contents) {
+                content.classList.remove('active');
+            }
+            document.getElementById(contentId).classList.add('active');
+            
+            if (contentId === 'planets' && document.getElementById('planetGrid').children.length === 0) {
+                renderPlanets();
+            }
+        }
+
+        function renderPlanets() {
+            const planetGrid = document.getElementById('planetGrid');
+            planets.forEach(planet => {
+                const planetCard = document.createElement('div');
+                planetCard.className = 'planet-card';
+                planetCard.innerHTML = `
+                    <h2>${planet.name}</h2>
+                    <img src="${planet.image}" alt="${planet.name}" class="planet-image">
+                    <p>${planet.info}</p>
+                `;
+                planetGrid.appendChild(planetCard);
+            });
+        }
+
+        // Show facts tab by default
+        document.addEventListener('DOMContentLoaded', () => {
+            showContent('facts');
+        });
     </script>
 </body>
 </html>
+
