@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Facts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0a1f44;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .fact-card {
+            background-color: #1a3366;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Amazing Space Facts 🌎</h1>
+        <button onclick="getRandomFact()">Show Random Fact</button>
+        <div id="factDisplay" class="fact-card">
+            Click the button to see a space fact!
+        </div>
+    </div>
+
+    <script>
+        const spaceFacts = {
+            "space_facts": [
+                {
+                    "id": 1,
+                    "fact": "Light from the Sun takes approximately 8 minutes and 20 seconds to reach Earth"
+                },
+                {
+                    "id": 2,
+                    "fact": "One day on Venus is longer than its year. Venus takes 243 Earth days to rotate on its axis"
+                }
+                // Add the remaining 18 facts here from the JSON
+            ]
+        };
+
+        function getRandomFact() {
+            const facts = spaceFacts.space_facts;
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const factDisplay = document.getElementById('factDisplay');
+            factDisplay.innerHTML = `<h3>Fact #${facts[randomIndex].id}</h3>
+                                   <p>${facts[randomIndex].fact}</p>`;
+        }
+    </script>
+</body>
+</html>
